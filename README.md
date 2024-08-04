@@ -1,8 +1,8 @@
-# ProductShop
+# readme
 
 ## 项目架构
 
-![image-20240727155254783](./productshop.assets/image-20240727155254783.png)
+![image-20240727155254783](./readme.assets/image-20240727155254783.png)
 
 
 
@@ -50,19 +50,19 @@ $ go run consumer/consumer.go
 
 商城主页：
 
-![image-20240727155611550](./productshop.assets/image-20240727155611550.png)
+![image-20240727155611550](./readme.assets/image-20240727155611550.png)
 
 登录页面：
 
-![image-20240727155623812](./productshop.assets/image-20240727155623812.png)
+![image-20240727155623812](./readme.assets/image-20240727155623812.png)
 
 商城页面：
 
-![image-20240727155646311](./productshop.assets/image-20240727155646311.png)
+![image-20240727155646311](./readme.assets/image-20240727155646311.png)
 
 商品页面：
 
-![image-20240727155657282](./productshop.assets/image-20240727155657282.png)
+![image-20240727155657282](./readme.assets/image-20240727155657282.png)
 
 ## 数据库
 
@@ -164,6 +164,11 @@ hmset product-8 total 100 ordered 0
 
 
 ## 压力测试
+
+### VERSION1.1
+
+
+### VERSION1.0
 
 处理器：12th Gen Intel(R) core(TM) i5-12500H
 

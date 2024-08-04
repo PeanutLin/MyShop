@@ -12,14 +12,14 @@ go build -o getproductapp getProduct/getProduct.go
 go build -o validateapp validate/validate.go
 
 # 创建目标文件夹
-mkdir -p productshop
+mkdir -p productshopapp
 
 # 移动编译后的应用程序到目标文件夹
-mv consumerapp productshop/
-mv fontedapp productshop/
-mv backendapp productshop/
-mv getproductapp productshop/
-mv validateapp productshop/
+mv consumerapp productshopapp/
+mv fontedapp productshopapp/
+mv backendapp productshopapp/
+mv getproductapp productshopapp/
+mv validateapp productshopapp/
 
 # 输出提示信息
 echo "build finish"
