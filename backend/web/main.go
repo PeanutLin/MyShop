@@ -23,7 +23,7 @@ func main() {
 	// 设置重定向 / 至 /order/index
 	app.Get("/", func(ctx iris.Context) {
 		ctx.Redirect("/order/index")
-  })
+	})
 
 	// 3.注册模板
 	tempalte := iris.HTML("./backend/web/views", ".html").Layout("shared/layout.html").Reload(true)
@@ -64,7 +64,7 @@ func main() {
 
 	// 6.启动服务
 	app.Run(
-		iris.Addr(common.BackendHost + ":" + common.BackendPort),
+		iris.Addr(common.BackendHost+":"+common.BackendPort),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		iris.WithOptimizations,
 	)

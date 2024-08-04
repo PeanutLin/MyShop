@@ -10,11 +10,11 @@ import (
 
 //高级加密标准（Adevanced Encryption Standard ,AES）
 
-//16,24,32位字符串的话，分别对应AES-128，AES-192，AES-256 加密方法
-//key不能泄露
+// 16,24,32位字符串的话，分别对应AES-128，AES-192，AES-256 加密方法
+// key不能泄露
 var PwdKey = []byte("DIS**#KKKDJJSKDI")
 
-//PKCS7 填充模式
+// PKCS7 填充模式
 func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext)%blockSize
 	//Repeat()函数的功能是把切片[]byte{byte(padding)}复制padding个，然后合并成新的字节切片返回
@@ -55,7 +55,7 @@ func AesEcrypt(origData []byte, key []byte) ([]byte, error) {
 	return crypted, nil
 }
 
-//实现解密
+// 实现解密
 func AesDeCrypt(cypted []byte, key []byte) ([]byte, error) {
 	//创建加密算法实例
 	block, err := aes.NewCipher(key)

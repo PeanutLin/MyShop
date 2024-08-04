@@ -21,7 +21,7 @@ type UserController struct {
 func (c *UserController) Get() mvc.View {
 	return mvc.View{
 		Layout: "",
-		Name: "user/welcome.html",
+		Name:   "user/welcome.html",
 	}
 }
 
@@ -29,7 +29,7 @@ func (c *UserController) Get() mvc.View {
 func (c *UserController) GetRegister() mvc.View {
 	return mvc.View{
 		Layout: "",
-		Name: "user/register.html",
+		Name:   "user/register.html",
 	}
 }
 
@@ -37,16 +37,17 @@ func (c *UserController) GetRegister() mvc.View {
 func (c *UserController) GetLogin() mvc.View {
 	return mvc.View{
 		Layout: "",
-		Name: "user/login.html",
+		Name:   "user/login.html",
 	}
 }
+
 // http://111.230.70.68:8080/user/loginerr
 func (c *UserController) GetLoginerr() mvc.View {
 	return mvc.View{
 		Layout: "",
-		Name: "user/login.html",
-		Data: iris.Map {
-			"showMessage" : "提示：用户名或密码错误，请重试",
+		Name:   "user/login.html",
+		Data: iris.Map{
+			"showMessage": "提示：用户名或密码错误，请重试",
 		},
 	}
 }
@@ -58,8 +59,8 @@ func (c *UserController) PostRegister() {
 		pwd      = c.Ctx.FormValue("password")
 	)
 	user := &datamodels.User{
-		NickName: nickName,
-		UserName: userName,
+		NickName:     nickName,
+		UserName:     userName,
 		HashPassword: pwd,
 	}
 	_, err := c.UserService.AddUser(user)
@@ -83,21 +84,21 @@ func (c *UserController) PostLogin() mvc.Response {
 
 	// Login Failed
 	if !isOk {
-		return mvc.Response {
+		return mvc.Response{
 			Path: "loginerr",
 		}
 	}
 
 	// 写入用户 ID 到 Cookie 中
-	common.GlobalCookie(c.Ctx, "uid",  strconv.FormatInt(user.ID, 10))
+	common.GlobalCookie(c.Ctx, "uid", strconv.FormatInt(user.ID, 10))
 	uidByte := strconv.FormatInt(user.ID, 10)
 	uidString, err := common.EnPwdCode([]byte(uidByte))
 	if err != nil {
 		fmt.Println(err)
 	}
-	common.GlobalCookie(c.Ctx, "sign",  uidString)
+	common.GlobalCookie(c.Ctx, "sign", uidString)
 
-	return mvc.Response {
+	return mvc.Response{
 		Path: "/product",
 	}
 }

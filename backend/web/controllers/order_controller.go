@@ -17,7 +17,7 @@ func (o *OrderController) GetAll() mvc.View {
 	if err != nil {
 		o.Ctx.Application().Logger().Debug(err)
 	}
-	
+
 	return mvc.View{
 		Name: "order/view.html",
 		Data: iris.Map{
@@ -31,4 +31,3 @@ func (o *OrderController) GetIndex() mvc.View {
 		Name: "order/index.html",
 	}
 }
-

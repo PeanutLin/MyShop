@@ -29,9 +29,9 @@ var script = `
 	end
 	return 0
 `
-// redis 全局句柄
-var rdb *redis.Client;
 
+// redis 全局句柄
+var rdb *redis.Client
 
 // 获取秒杀商品
 func GetProductFromRedis(productName string, productNum string) bool {
@@ -53,7 +53,6 @@ func GetProductFromRedis(productName string, productNum string) bool {
 	}
 }
 
-// 
 func GetProductHandler(w http.ResponseWriter, req *http.Request) {
 	// 从 URL 查询字符串中获取参数
 	queryParams := req.URL.Query()
@@ -70,7 +69,7 @@ func GetProductHandler(w http.ResponseWriter, req *http.Request) {
 
 // http 服务
 func StartHTTPServer() {
-	
+
 	http.HandleFunc("/getProduct", GetProductHandler)
 	err := http.ListenAndServe(":12345", nil)
 	if err != nil {
@@ -83,7 +82,7 @@ func main() {
 	rdb = redis.NewClient(&redis.Options{
 		Addr:     common.RedisHost + ":" + common.RedisPort,
 		Password: common.RedisPassword,
-		DB:       0,  // use default DB
+		DB:       0, // use default DB
 	})
 
 	StartHTTPServer()

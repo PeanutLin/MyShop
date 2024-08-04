@@ -37,17 +37,17 @@ func (f *Filter) GetFilter(uri string) FilterHandler {
 func (f *Filter) Handler(webHandler WebHandler) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		for path, handle := range f.filterUriMap {
-				if strings.Contains(r.RequestURI, path) {
-					err := handle(w, r)
-					if err != nil {
-						w.Write([]byte(err.Error()))
-						return
-					}
-					break
+			if strings.Contains(r.RequestURI, path) {
+				err := handle(w, r)
+				if err != nil {
+					w.Write([]byte(err.Error()))
+					return
 				}
+				break
 			}
-			// 执行正常注册函数
-			webHandler(w, r)
 		}
+		// 执行正常注册函数
+		webHandler(w, r)
+	}
 
 }

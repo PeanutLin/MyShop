@@ -10,7 +10,6 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-
 func NewMysqlConn() (*gorm.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", common.MySQLUserName, common.MySQLPassWord, common.MySQLHost, common.MySQLPort, common.MySQLDbName)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
@@ -21,7 +20,6 @@ func NewMysqlConn() (*gorm.DB, error) {
 	}
 	return db, nil
 }
-
 
 // 获取返回值，获取一条
 func GetResultRow(rows *sql.Rows) map[string]string {

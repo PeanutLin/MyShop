@@ -100,6 +100,6 @@ func (u *UserManagerRepository) SelectById(userID int64) (user *datamodels.User,
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return user, nil
 }

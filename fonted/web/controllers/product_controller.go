@@ -15,7 +15,6 @@ import (
 	"github.com/kataras/iris/v12/sessions"
 )
 
-
 type ProductController struct {
 	Ctx            iris.Context
 	ProductService services.IProductService
@@ -63,7 +62,7 @@ func generateStaticHtml(ctx iris.Context, template *template.Template,
 		}
 	}
 	// 2.生成静态文件
-	file, err := os.OpenFile(fileName, os.O_CREATE | os.O_WRONLY, os.ModePerm)
+	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
 		ctx.Application().Logger().Debug(err)
 	}
@@ -82,7 +81,7 @@ func (p *ProductController) Get() mvc.View {
 	return mvc.View{
 		Layout: "",
 		Name:   "product/menhu.html",
-		Data: iris.Map {
+		Data: iris.Map{
 			"product0": ProductArray[0],
 			"product1": ProductArray[1],
 			"product2": ProductArray[2],
@@ -123,28 +122,27 @@ func (p *ProductController) GetOrder() string {
 	// 获取商品 ID
 	productId, err := p.Ctx.URLParamInt64("productID")
 	if err != nil {
-			p.Ctx.Application().Logger().Debug(err)
+		p.Ctx.Application().Logger().Debug(err)
 	}
 
 	fmt.Println("productID", productId)
 
-	
 	hostURL := "http://" + common.ValidateHost1 + ":" + common.ValidatePort + "/onsale?productID=" + strconv.FormatInt(productId, 10)
 	fmt.Println("validate : ", hostURL)
 	response, body, err := common.GetCurl(hostURL, p.Ctx.Request())
 	if err != nil {
-			return "server error"
+		return "server error"
 	}
 
 	// 判断状态
 	if response.StatusCode == 200 {
-			if string(body) == "true" {
-					return "true"
-			} else {
-				return "false"
-			}
-	} else {
+		if string(body) == "true" {
+			return "true"
+		} else {
 			return "false"
+		}
+	} else {
+		return "false"
 	}
 
 }

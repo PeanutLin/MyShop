@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	db ,err := db.NewMysqlConn()
+	db, err := db.NewMysqlConn()
 	if err != nil {
 		fmt.Println(err)
 	}

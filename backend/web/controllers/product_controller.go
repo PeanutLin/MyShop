@@ -36,7 +36,6 @@ func (p *ProductController) GetAll() mvc.View {
 	}
 }
 
-// 
 func (p *ProductController) Get() mvc.View {
 	products, err := p.ProductService.GetAllProduct()
 	var errMsg string
@@ -58,7 +57,7 @@ func (p *ProductController) PostUpdate() {
 	product := &datamodels.Product{}
 	p.Ctx.Request().ParseForm()
 	dec := common.NewDecoder(&common.DecoderOptions{TagName: TagName})
-	
+
 	if err := dec.Decode(p.Ctx.Request().Form, product); err != nil {
 		p.Ctx.Application().Logger().Debug(err)
 	}
@@ -79,7 +78,7 @@ func (p *ProductController) GetAdd() mvc.View {
 
 // 删除商品
 // http://localhost:8081/product/add
-func (p *ProductController) GetDelete()  {
+func (p *ProductController) GetDelete() {
 	idString := p.Ctx.URLParam("id")
 	id, err := strconv.ParseInt(idString, 10, 16)
 	if err != nil {
@@ -120,8 +119,8 @@ func (p *ProductController) GetManager() mvc.View {
 
 	return mvc.View{
 		Name: "product/manager.html",
-		Data: iris.Map {
-			"product" : product,
+		Data: iris.Map{
+			"product": product,
 		},
 	}
 }

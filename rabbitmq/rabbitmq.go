@@ -16,11 +16,11 @@ import (
 var MQURL = "amqp://" + common.RMQUser + ":" + common.RMQPawsd + "@" + common.RMQHost + ":" + common.RMQPort + "/" + common.RMQVHost
 
 type RabbitMQ struct {
-	conn *amqp.Connection
+	conn    *amqp.Connection
 	channel *amqp.Channel
 	// 队列名称
 	QueueName string
-	// 交换机	
+	// 交换机
 	Exchange string
 	// key
 	Key string
@@ -34,9 +34,9 @@ type RabbitMQ struct {
 func NewRabbitMQ(queueName string, exchange string, key string) *RabbitMQ {
 	rabbitmq := &RabbitMQ{
 		QueueName: queueName,
-		Exchange: exchange,
-		Key: key,
-		MqURL: MQURL,
+		Exchange:  exchange,
+		Key:       key,
+		MqURL:     MQURL,
 	}
 	var err error
 	rabbitmq.conn, err = amqp.Dial(rabbitmq.MqURL)
@@ -49,7 +49,7 @@ func NewRabbitMQ(queueName string, exchange string, key string) *RabbitMQ {
 }
 
 // 断开 channel 和 connection 连接
-func (r * RabbitMQ) Destroy() {
+func (r *RabbitMQ) Destroy() {
 	r.channel.Close()
 	r.conn.Close()
 }
@@ -66,7 +66,6 @@ func (r *RabbitMQ) failOnErr(err error, message string) {
 func NewRabbitMQSimple(queueName string) *RabbitMQ {
 	return NewRabbitMQ(queueName, "", "")
 }
-
 
 // Simple 生产者
 func (r *RabbitMQ) PublishSimple(message string) error {
@@ -91,7 +90,6 @@ func (r *RabbitMQ) PublishSimple(message string) error {
 		return err
 	}
 
-
 	// 2.发送消息到队列中
 	r.channel.Publish(
 		// 交换机
@@ -105,7 +103,7 @@ func (r *RabbitMQ) PublishSimple(message string) error {
 		// 发送的信息
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body: []byte(message),
+			Body:        []byte(message),
 		},
 	)
 
@@ -158,7 +156,7 @@ func (r *RabbitMQ) ConsumeSimple(orderService services.IOrderService, productSer
 	forever := make(chan bool)
 	// 启用协程处理消息
 	r.channel.Qos(1, 0, false)
-	
+
 	go func() {
 		for d := range msgs {
 			log.Printf("接收到消息 Received a message: %s", d.Body)
@@ -184,4 +182,3 @@ func (r *RabbitMQ) ConsumeSimple(orderService services.IOrderService, productSer
 	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
 	<-forever
 }
-

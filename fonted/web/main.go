@@ -22,8 +22,8 @@ func main() {
 
 	// 设置重定向 / 至 /product
 	app.Get("/", func(ctx iris.Context) {
-			ctx.Redirect("/user/")
-  })
+		ctx.Redirect("/user/")
+	})
 
 	// 2.设置错误模式 -------------------------------------
 	app.Logger().SetLevel("debug")
@@ -32,9 +32,9 @@ func main() {
 	tempalte := iris.HTML("./fonted/web/views", ".html").Reload(true)
 	app.RegisterView(tempalte)
 
-	// 静态页面 
+	// 静态页面
 	// app.HandleDir("/html", "./fonted/web/htmlProductShow")
-	
+
 	// 资源目录 -------------------------------------
 	app.HandleDir("/assets", "./assets")
 
@@ -80,7 +80,7 @@ func main() {
 
 	// 6.启动服务 -------------------------------------
 	app.Run(
-		iris.Addr(common.FontedHost + ":" + common.FontedPort),
+		iris.Addr(common.FontedHost+":"+common.FontedPort),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		iris.WithOptimizations,
 	)

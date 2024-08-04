@@ -9,7 +9,7 @@ import (
 
 type IProduct interface {
 	// 连接数据库
-	Conn() (error)
+	Conn() error
 	// 商品插入
 	Insert(*datamodels.Product) (int64, error)
 	// 根据商品主键删除商品
@@ -29,7 +29,7 @@ type ProductManager struct {
 }
 
 // 新建商品管理接口
-func NewProductManager(db * gorm.DB) IProduct {
+func NewProductManager(db *gorm.DB) IProduct {
 	return &ProductManager{
 		sqlConn: db,
 	}
@@ -47,7 +47,7 @@ func (p *ProductManager) Conn() error {
 	return nil
 }
 
-	// 商品插入
+// 商品插入
 func (p *ProductManager) Insert(product *datamodels.Product) (int64, error) {
 	if err := p.Conn(); err != nil {
 		return -1, err
@@ -112,7 +112,7 @@ func (p *ProductManager) SelectAll() (products []*datamodels.Product, err error)
 }
 
 // 减少指定商品数量
-func (p * ProductManager)SubProductNum(productID int64, num int64) error {
+func (p *ProductManager) SubProductNum(productID int64, num int64) error {
 	if err := p.Conn(); err != nil {
 		return err
 	}
@@ -122,7 +122,7 @@ func (p * ProductManager)SubProductNum(productID int64, num int64) error {
 		return err
 	}
 
-	err = p.sqlConn.Model(product).Update("productNum", product.ProductNum - num).Error
+	err = p.sqlConn.Model(product).Update("productNum", product.ProductNum-num).Error
 	if err != nil {
 		return err
 	}

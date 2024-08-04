@@ -28,7 +28,7 @@ var (
 
 	// 一致性哈希句柄
 	hashConsistent *common.Consistent
-	
+
 	// 用户接入控制句柄
 	accessControl = &AccessControl{
 		sourceArray: make(map[int]time.Time),
@@ -39,21 +39,21 @@ var (
 )
 
 // 获取接入用户的信息
-func (m * AccessControl) GetNewRecord(uid int) time.Time {
+func (m *AccessControl) GetNewRecord(uid int) time.Time {
 	m.RWMutex.RLock()
 	defer m.RWMutex.RUnlock()
 	return m.sourceArray[uid]
 }
 
 // 设置接入用户的信息
-func (m * AccessControl) SetNewRecord(uid int) {
+func (m *AccessControl) SetNewRecord(uid int) {
 	m.RWMutex.Lock()
 	defer m.RWMutex.Unlock()
 	m.sourceArray[uid] = time.Now()
 }
 
 // 分布式验证
-func (m * AccessControl) GetDistributedRight(r *http.Request) bool {
+func (m *AccessControl) GetDistributedRight(r *http.Request) bool {
 	// 获取用用户 uid
 	uid, err := r.Cookie("uid")
 	if err != nil {
@@ -97,13 +97,13 @@ func (m *AccessControl) GetDataFromMap(uid string) bool {
 
 // 获取用户数据（代理获取）
 func (m *AccessControl) GetDataFromOtherMap(host string, request *http.Request) bool {
-	hostUrl := "http://" + host + ":" + common.ValidatePort + "/checkRight" 
-	response, body,err := common.GetCurl(hostUrl, request)
+	hostUrl := "http://" + host + ":" + common.ValidatePort + "/checkRight"
+	response, body, err := common.GetCurl(hostUrl, request)
 	if err != nil {
 		fmt.Println("get curl error")
 		return false
 	}
-	
+
 	// 判断状态
 	if response.StatusCode == 200 {
 		return string(body) == "true"
@@ -143,7 +143,7 @@ func CheckIdInfo(checkStr string, signStr string) bool {
 // 生成访问数量控制接口的 URL
 func generateProductURL(productID int64, productNum int64) string {
 	tail := "?productName=product-" + strconv.FormatInt(productID, 10) + "&productNum=" + strconv.FormatInt(productNum, 10)
-	result := "http://" + common.GetProductIP + ":" + common.GetProductPort + "/getProduct" +  tail
+	result := "http://" + common.GetProductIP + ":" + common.GetProductPort + "/getProduct" + tail
 	fmt.Println(result)
 	return result
 }
@@ -153,27 +153,27 @@ func BuyProduct(userID int64, productID int64, r *http.Request) []byte {
 	hostUrl := generateProductURL(productID, 1)
 	fmt.Printf("one product : %s\n", hostUrl)
 	responseValidate, validateBody, err := common.GetCurl(hostUrl, r)
-	if err !=nil {
+	if err != nil {
 		return []byte("getProduct false")
 	}
-	
+
 	// 判断数量控制接口请求状态
 	if responseValidate.StatusCode == 200 {
-		if string(validateBody)=="true" {
+		if string(validateBody) == "true" {
 
 			// 1.创建消息体
 			message := datamodels.NewMessage(userID, productID, 1)
 			// 类型转化
-			byteMessage, err :=json.Marshal(message)
-			if err !=nil {
-				return[]byte("json Marshal false")
+			byteMessage, err := json.Marshal(message)
+			if err != nil {
+				return []byte("json Marshal false")
 			}
 
 			// 2.生产消息
 			err = rabbitMqValidate.PublishSimple(string(byteMessage))
-			if err !=nil {
+			if err != nil {
 				return []byte("PublishSimple false")
-				
+
 			}
 			return []byte("true")
 		}
@@ -187,7 +187,7 @@ func OnSaleHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("running OnSale")
 	// 获得 productID
 	queryForm, err := url.ParseQuery(r.URL.RawQuery)
-	if err !=nil || len(queryForm["productID"]) <= 0 {
+	if err != nil || len(queryForm["productID"]) <= 0 {
 		w.Write([]byte("query false"))
 		return
 	}
@@ -196,21 +196,21 @@ func OnSaleHandler(w http.ResponseWriter, r *http.Request) {
 
 	// 获取用户 cookie
 	userCookie, err := r.Cookie("uid")
-	if err !=nil {
+	if err != nil {
 		w.Write([]byte("cookie false"))
 		return
 	}
 
 	// 获取商品ID
-	productID,err :=strconv.ParseInt(productString,10,64)
-	if err !=nil {
+	productID, err := strconv.ParseInt(productString, 10, 64)
+	if err != nil {
 		w.Write([]byte("Parse productID false"))
 		return
 	}
 
 	// 获取用户ID
-	userID,err := strconv.ParseInt(userCookie.Value, 10, 64)
-	if err !=nil {
+	userID, err := strconv.ParseInt(userCookie.Value, 10, 64)
+	if err != nil {
 		w.Write([]byte("Parse userID false"))
 		return
 	}
@@ -237,7 +237,6 @@ func CheckRightHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("true"))
 }
 
-
 // 启动 HTTP 服务器
 func StartHTTPServer() {
 	// 1. 过滤器
@@ -251,7 +250,7 @@ func StartHTTPServer() {
 	http.HandleFunc("/onsale", filter.Handler(OnSaleHandler))
 	// 用于分布式验证
 	http.HandleFunc("/checkRight", filter.Handler(CheckRightHandler))
-	http.ListenAndServe(common.ValidateHost1 + ":" + common.ValidatePort, nil)
+	http.ListenAndServe(common.ValidateHost1+":"+common.ValidatePort, nil)
 }
 
 func main() {
