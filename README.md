@@ -1,12 +1,24 @@
 # readme
 
-## 项目架构
+## Version 2
+1. 服务间的逻辑与文件夹对应关系更加清晰
+2. 引入服务发现框架 consul，服务之间的调用逻辑进一步解耦
+3. 内部服务间的调用更新为性能更好的 RPC 框架 Kitex
+4. 将 RabbitMQ 替换为 RocketMQ 削峰写入 MySQL 落库，功能业务灵活性增强，性能提升。
+5. 基于 Prometheus 添加 RocketMQ、MySQL、RPC 框架埋点，添加消费积压，MySQL 写入失败，RPC 调用失败等监控告警
+6. 基于 OpenTracing 协议和 Jeager 搭建服务的链路追踪系统，便于观察错误调用链，排查系统的性能瓶颈。
+
+TODO...
+
+## Version 1
+
+### 项目架构
 
 ![image-20240727155254783](./readme.assets/image-20240727155254783.png)
 
 
 
-## 运行演示
+### 运行演示
 
 | 服务器名称        | IP 内网             | 公网 IP |
 | ----------------- | ------------------- | ------- |
@@ -64,9 +76,9 @@ $ go run consumer/consumer.go
 
 ![image-20240727155657282](./readme.assets/image-20240727155657282.png)
 
-## 数据库
+### 数据库
 
-### MySQL
+#### MySQL
 
 商品表：
 
@@ -133,7 +145,7 @@ CREATE TABLE orders (
 
 
 
-### Redis
+#### Redis
 
 Hash：
 
@@ -165,10 +177,12 @@ hmset product-8 total 100 ordered 0
 
 ## 压力测试
 
-### VERSION1.1
+### VERSION 2
+
+TODO ...
 
 
-### VERSION1.0
+### VERSION 1
 
 处理器：12th Gen Intel(R) core(TM) i5-12500H
 
